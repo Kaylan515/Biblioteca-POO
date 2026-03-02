@@ -37,4 +37,13 @@ class Itembiblioteca():
             
     def get_codigo(self):
         return self.__codigo
+
+class Livro(Itembiblioteca):
+    def __init__(self, codigo, titulo, ano: int, disponivel: bool, autor: str, num_paginas: int):
+        super().__init__(codigo, titulo, ano, disponivel)
+        self.__autor = autor
+        self.__num_paginas = num_paginas
     
+    def exibir_detalhes(self):
+        super().exibir_detalhes()
+        print(f"Autor do livro: {self.autor}, número de páginas: {self.num_paginas}")
