@@ -1,49 +1,60 @@
-class Itembiblioteca():
-    def __init__(self, codigo, titulo, ano: int, disponivel: bool):
-        self.__codigo = codigo
-        self.__titulo = titulo
-        self.__ano = ano
+class ItemBiblioteca:
+    def __init__(self, codigo, titulo, ano: int, disponivel: bool = True):
+        self.set_codigo(codigo)
+        self.set_titulo(titulo)
+        self.set_ano(ano)
         self.__disponivel = disponivel
-    
-    def exibir_detalhes(self):
-        print(f"Código do livro: {self.codigo}, nome do livro: {self.titulo}, ano de lançamento: {self.ano}, se o item está disponivel: {self.disponivel}")
-    
-    def emprestar(self):
-        if self.disponivel == False:
-            print(f"O livro {self.titulo}, poder ser emprestado")
-        else:
-            print(f"O livro não está disponivel para ser emprestado.")
-    
-    def devolver(self):
-        if self.disponivel == True:
-            print(f"O livro {self.titulo}, poder ser devolvido")
-        else:
-            print(f"O livro não está disponivel para ser devolvido.")
-    
-    # getters e setters com validações simples (ex.: ano > 0, título não vazio)
-    def set_validacao(self, codigo:str, titulo:str, ano:int):
-        if len(codigo) == 0:
-            print("Código inválido. O código não pode ser vazio.")
-        else:
-            self.__codigo = codigo
-        if len(titulo) == 0:
-            print("Título inválido. O título não pode ser vazio.")
-        else:
-            self.__titulo = titulo
-        if ano < 0:
-            print("Ano inválido. O ano não pode ser negativo.")
-        else:
-            self.__ano = ano
-            
+
     def get_codigo(self):
         return self.__codigo
 
-class Livro(Itembiblioteca):
-    def __init__(self, codigo, titulo, ano: int, disponivel: bool, autor: str, num_paginas: int):
-        super().__init__(codigo, titulo, ano, disponivel)
-        self.__autor = autor
-        self.__num_paginas = num_paginas
-    
+    def set_codigo(self, codigo):
+        if not str(codigo).strip():
+            print("Erro: O código não pode ser vazio.")
+            self.__codigo = "000"
+        else:
+            self.__codigo = codigo
+
+    def get_titulo(self):
+        return self.__titulo
+
+    def set_titulo(self, titulo):
+        if not str(titulo).strip():
+            print("Erro: O título não pode ser vazio.")
+            self.__titulo = "Sem Título"
+        else:
+            self.__titulo = titulo
+
+    def get_ano(self):
+        return self.__ano
+
+    def set_ano(self, ano: int):
+        if int(ano) <= 0:
+            print("Erro: O ano deve ser maior que zero.")
+            self.__ano = 2026
+        else:
+            self.__ano = int(ano)
+
+    def is_disponivel(self):
+        return self.__disponivel
+
+    def emprestar(self):
+        if self.__disponivel:
+            self.__disponivel = False
+            print(f"Sucesso: O item '{self.__titulo}' foi emprestado.")
+            return True
+        print(f"Erro: O item '{self.__titulo}' já está emprestado.")
+        return False
+
+    def devolver(self):
+        if not self.__disponivel:
+            self.__disponivel = True
+            print(f"Sucesso: O item '{self.__titulo}' foi devolvido.")
+            return True
+        print(f"Erro: O item '{self.__titulo}' já está na biblioteca.")
+        return False
+
     def exibir_detalhes(self):
-        super().exibir_detalhes()
-        print(f"Autor do livro: {self.autor}, número de páginas: {self.num_paginas}")
+        status = "Disponível" if self.__disponivel else "Emprestado"
+        return f"Código: {self.__codigo} | Título: {self.__titulo} | Ano: {self.__ano} | Status: {status}"
+    
